@@ -1,0 +1,70 @@
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### ─── Health Check ───────────────────
+# @name healthCheck
+GET {{baseUrl}}/health
+
+###
+
+### ─── Alerts ──────────────────────────
+# @name createAlert
+POST {{baseUrl}}/alerts
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "productId": 101,
+  "targetPrice": 499.99
+}
+
+###
+
+# @name getAlerts
+GET {{baseUrl}}/alerts?userId=1
+
+###
+
+# @name deleteAlert
+DELETE {{baseUrl}}/alerts/1
+
+###
+
+### ─── Products ────────────────────────
+# @name getProducts
+GET {{baseUrl}}/products
+
+###
+
+# @name getProductById
+GET {{baseUrl}}/products/101
+
+###
+
+### ─── Price History ───────────────────
+# @name getPriceHistory
+GET {{baseUrl}}/products/101/price-history
+
+###
+
+### ─── Users ───────────────────────────
+# @name registerUser
+POST {{baseUrl}}/users/register
+Content-Type: {{contentType}}
+
+{
+  "email": "test@example.com",
+  "password": "testpass123"
+}
+
+###
+
+# @name loginUser
+POST {{baseUrl}}/users/login
+Content-Type: {{contentType}}
+
+{
+  "email": "test@example.com",
+  "password": "testpass123"
+}
