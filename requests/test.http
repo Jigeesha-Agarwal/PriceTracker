@@ -16,7 +16,8 @@ Content-Type: {{contentType}}
 {
   "userId": 1,
   "productId": 101,
-  "targetPrice": 499.99
+  "targetPrice": 499.99,
+  "webhookUrl":"https://webhook.site/11904aa9-e69c-4670-bce7-7474489a188f"
 }
 
 ###
@@ -68,3 +69,19 @@ Content-Type: {{contentType}}
   "email": "test@example.com",
   "password": "testpass123"
 }
+
+### ─── Webhook Test ──────────────────────────
+# @name webhookTest
+# POST https://webhook.site/11904aa9-e69c-4670-bce7-7474489a188f
+# Content-Type: application/json
+
+# {
+#   "event": "price_drop",
+#   "product": "Samsung TV 55\"",
+#   "oldPrice": 59999,
+#   "newPrice": 49999,
+#   "dropPercent": 16.7,
+#   "userId": 1,
+#   "alertId": 42,
+#   "triggeredAt": "2026-03-21T06:53:57Z"
+# }
