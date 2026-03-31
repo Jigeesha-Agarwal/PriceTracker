@@ -36,7 +36,7 @@ const scrapeQueue = new Bull(
   process.env.REDIS_URL ? { redis: process.env.REDIS_URL } : { redis: REDIS_CONFIG }
 );
 
-const scrapeQueue = new Bull('scrapeQueue', { redis: REDIS_CONFIG });
+// const scrapeQueue = new Bull('scrapeQueue', { redis: REDIS_CONFIG });
 
 scrapeQueue.process(async job => {
   const { productId } = job.data;
