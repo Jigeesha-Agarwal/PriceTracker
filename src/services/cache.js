@@ -8,14 +8,25 @@ const Redis = require('ioredis');
  *  2. Alert dedup keys (24-hr TTL) — prevents firing the same alert multiple times per day
  */
 
-const client = new Redis({
-  host: process.env.REDIS_HOST || '127.0.0.1',
-  port: parseInt(process.env.REDIS_PORT) || 6379,
-  password: process.env.REDIS_PASSWORD || undefined,
-  maxRetriesPerRequest: 3,
-  enableReadyCheck: true,
-  lazyConnect: false,
-});
+// const client = new Redis({
+//   host: process.env.REDIS_HOST || '127.0.0.1',
+//   port: parseInt(process.env.REDIS_PORT) || 6379,
+//   password: process.env.REDIS_PASSWORD || undefined,
+//   maxRetriesPerRequest: 3,
+//   enableReadyCheck: true,
+//   lazyConnect: false,
+// });
+
+const client = process.env.REDIS_URL
+  ? new Redis(process.env.REDIS_URL)
+  : new Redis({
+      host: process.env.REDIS_HOST || '127.0.0.1',
+      port: parseInt(process.env.REDIS_PORT) || 6379,
+      password: process.env.REDIS_PASSWORD || undefined,
+      maxRetriesPerRequest: 3,
+      enableReadyCheck: true,
+      lazyConnect: false,
+    });
 
 client.on('connect', () => console.log('[redis] Connected'));
 client.on('error', err => console.error('[redis] Error:', err.message));

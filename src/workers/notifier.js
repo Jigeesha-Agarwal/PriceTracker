@@ -16,13 +16,24 @@ const logger = require('../utils/logger');
  *   - webhook: POSTs a signed JSON payload to webhookUrl
  */
 
+// const REDIS_CONFIG = {
+//   host: process.env.REDIS_HOST || '127.0.0.1',
+//   port: parseInt(process.env.REDIS_PORT) || 6379,
+//   password: process.env.REDIS_PASSWORD || undefined,
+// };
+
 const REDIS_CONFIG = {
   host: process.env.REDIS_HOST || '127.0.0.1',
   port: parseInt(process.env.REDIS_PORT) || 6379,
   password: process.env.REDIS_PASSWORD || undefined,
 };
 
-const notifyQueue = new Bull('notifyQueue', { redis: REDIS_CONFIG });
+const notifyQueue = new Bull(
+  'notifyQueue',
+  process.env.REDIS_URL ? { redis: process.env.REDIS_URL } : { redis: REDIS_CONFIG }
+);
+
+// const notifyQueue = new Bull('notifyQueue', { redis: REDIS_CONFIG });
 
 notifyQueue.process(async job => {
   const {

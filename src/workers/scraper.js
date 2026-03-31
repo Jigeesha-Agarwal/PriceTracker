@@ -19,11 +19,22 @@ const logger = require('../utils/logger');
  *   6. Run alert engine to check for threshold crossings
  */
 
+// const REDIS_CONFIG = {
+//   host: process.env.REDIS_HOST || '127.0.0.1',
+//   port: parseInt(process.env.REDIS_PORT) || 6379,
+//   password: process.env.REDIS_PASSWORD || undefined,
+// };
+
 const REDIS_CONFIG = {
   host: process.env.REDIS_HOST || '127.0.0.1',
   port: parseInt(process.env.REDIS_PORT) || 6379,
   password: process.env.REDIS_PASSWORD || undefined,
 };
+
+const scrapeQueue = new Bull(
+  'scrapeQueue',
+  process.env.REDIS_URL ? { redis: process.env.REDIS_URL } : { redis: REDIS_CONFIG }
+);
 
 const scrapeQueue = new Bull('scrapeQueue', { redis: REDIS_CONFIG });
 
