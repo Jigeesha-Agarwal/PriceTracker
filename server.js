@@ -1,4 +1,7 @@
-require('dotenv').config();
+// Only load dotenv in development — Railway injects vars directly
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 require('./src/db'); // trigger DB connection check on startup
 
 const app = require('./src/app');
@@ -19,11 +22,11 @@ try {
 }
 
 const server = app.listen(PORT, () => {
-  console.log(`[app] Listening on http://localhost:${PORT}`);
+  // console.log(`[app] Listening on http://localhost:${PORT}`);
 });
 
 // Graceful shutdown (Day 6 polish)
 process.on('SIGTERM', () => {
-  console.log('[app] SIGTERM received — shutting down');
+  // console.log('[app] SIGTERM received — shutting down');
   server.close(() => process.exit(0));
 });
