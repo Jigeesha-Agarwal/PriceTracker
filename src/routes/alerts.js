@@ -14,10 +14,7 @@ router.post('/', validate(alertSchema), async (req, res, next) => {
     if (!product) return res.status(404).json({ error: 'Product not found' });
 
     // Prevent duplicates (same user + product + target)
-    const existing = await db('alerts')
-      .where({ user_id, product_id, target_price })
-      .whereNull('fired_at')
-      .first();
+    const existing = await db('alerts').where({ user_id, product_id, target_price }).first();
     if (existing) {
       return res.status(409).json({ error: 'Alert already exists', alert: existing });
     }
@@ -71,14 +68,14 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // ─── DELETE /alerts/:id ───────────────────────────────────────────────────────
-// Soft-delete: mark as fired rather than deleting the row
+// Hard delete: permanently removes the alert row from the database
 router.delete('/:id', async (req, res, next) => {
   try {
     const alert = await db('alerts').where({ id: req.params.id }).first();
     if (!alert) return res.status(404).json({ error: 'Alert not found' });
 
-    await db('alerts').where({ id: req.params.id }).update({ fired_at: new Date() });
-    res.json({ message: 'Alert deactivated', id: req.params.id });
+    await db('alerts').where({ id: req.params.id }).delete();
+    res.json({ message: 'Alert deleted', id: req.params.id });
   } catch (err) {
     next(err);
   }
